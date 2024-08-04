@@ -1,0 +1,31 @@
+import bcrypt
+
+def hash_password(password: str) -> str:
+    # Converte a senha para bytes
+    password_bytes = password.encode('utf-8')
+    # Gera um salt
+    salt = bcrypt.gensalt()
+    # Gera o hash da senha
+    hashed_password = bcrypt.hashpw(password_bytes, salt)
+    # Retorna o hash em formato de string
+    return hashed_password.decode('utf-8')
+
+def check_password(password: str, hashed_password: str) -> bool:
+    # Converte a senha e o hash para bytes
+    password_bytes = password.encode('utf-8')
+    hashed_password_bytes = hashed_password.encode('utf-8')
+    # Verifica se a senha corresponde ao hash
+    return bcrypt.checkpw(password_bytes, hashed_password_bytes)
+
+# Exemplo de uso
+if __name__ == "__main__":
+    senha = input("Digite uma senha: ")
+    senha_hash = hash_password(senha)
+    print(f"Senha hash: {senha_hash}")
+
+    # Verificação
+    senha_verificacao = input("Digite novamente a senha para verificação: ")
+    if check_password(senha_verificacao, senha_hash):
+        print("Senha verificada com sucesso!")
+    else:
+        print("Senha incorreta!")
