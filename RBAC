@@ -1,0 +1,33 @@
+class User:
+    def __init__(self, username, role):
+        self.username = username
+        self.role = role
+
+class AccessControl:
+    def __init__(self):
+        self.permissions = {
+            "admin": ["Visualizar Registros", "Editar Registros", "Deletar Registros"],
+            "doctor": ["Visualizar Registros", "Editar Registros"],
+            "receptionist": ["Visualizar Registros"]
+        }
+
+    def has_permission(self, user, permission):
+        if permission in self.permissions.get(user.role, []):
+            return True
+        return False
+
+# Exemplo de uso
+if __name__ == "__main__":
+    ac = AccessControl()
+    users = [
+        User("Gabriel", "admin"),
+        User("Lucas", "doctor"),
+        User("Ana", "receptionist")
+    ]
+
+    for user in users:
+        print(f"Permissões para {user.username} ({user.role}):")
+        for permission in ["Visualizar Registros", "Editar Registros", "Deletar Registros"]:
+            has_perm = ac.has_permission(user, permission)
+            print(f"  Pode {permission.replace('_', ' ')}: {has_perm}")
+        print()
